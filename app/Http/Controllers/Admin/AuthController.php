@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends BaseController {
 
     function main(){
-        var_dump('test');
         $user = Auth::user();
         if($user === null)
             return redirect('/admin/auth');
