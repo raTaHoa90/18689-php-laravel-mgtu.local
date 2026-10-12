@@ -39,6 +39,7 @@
     </dialog>
 
     <section>
+        {{ $users->links() }}
         <table class="table">
             <thead>
                 <tr>

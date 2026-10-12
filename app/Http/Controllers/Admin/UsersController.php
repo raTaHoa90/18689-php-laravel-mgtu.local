@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends BaseController {
 
@@ -16,13 +17,34 @@ class UsersController extends BaseController {
     }
 
     function user(User $user){
+        $this->menu->active = 'users';
 
+        return view('admin.users.user', [
+            'thisUser' => $user
+        ]);
     }
 
     /******** POST *********/
 
     function createUser(){
+        request()->validate([
+            'email' => 'required|email|min:8',
+            'name' => 'required|min:3',
+            'role' => 'required|integer'
+        ]);
 
+        $user = Auth::user();
+        if($user === null)
+            return '{"error":"Вы не авторизированы"}';
+
+        User::create([
+            'email'      => request('email'),
+            'name'       => request('name'),
+            'group_role' => request('role'),
+            'password'   => '123123'
+        ]);
+
+        return '{"ok":true}';
     }
 
 }
