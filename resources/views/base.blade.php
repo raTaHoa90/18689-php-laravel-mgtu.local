@@ -25,6 +25,7 @@
         </nav>
     </header>
     <main>
+        <div id=error_display></div>
         @yield('base-content')
     </main>
     <footer> &copy; 2025-2026</footer>

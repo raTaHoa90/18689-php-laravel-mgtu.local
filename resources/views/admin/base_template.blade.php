@@ -2,6 +2,7 @@
 
 @push('head')
     <link rel="stylesheet" href="/css/admin-styles.css">
+    <script src="/js/admin/admin.js"></script>
 @endpush
 
 @section('menu')
@@ -17,7 +18,25 @@
             @if(!$isAct && $itemMenu->isLink()) href="{{ $itemMenu->link }}" @endif
             >@if($itemMenu->isIcon())<i class="fa {{ $itemMenu->icon }}"></i>@endif
             {{ $itemMenu->caption }}
-            </a></li>
+            </a>
+            @if($itemMenu->hasSubMenu())
+            <ul class="vertical-menu">
+            @foreach($itemMenu as $subItemMenu)
+                @php($isSubAct = $menu->isActive($subItemMenu))
+                <li><a @class([
+                    "btn",
+                    'btn-light' => !$itemMenu->isCss(),
+                    ($itemMenu->css ?? '') => $itemMenu->isCss(),
+                    'border border-primary text-primary' => $isSubAct
+                ])
+                @if(!$isSubAct && $subItemMenu->isLink()) href="{{ $subItemMenu->link }}" @endif
+                >@if($subItemMenu->isIcon())<i class="fa {{ $subItemMenu->icon }}"></i>@endif
+                {{ $subItemMenu->caption }}
+                </a>
+            @endforeach
+            </ul>
+            @endif
+        </li>
     @endforeach
     </ul>
 @endsection
