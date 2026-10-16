@@ -3,19 +3,24 @@
 namespace App\Http\Menu;
 
 class MenuItem implements \IteratorAggregate {
-    const FIELDS = ['caption', 'icon', 'link', 'css', 'id'];
+    const FIELDS = ['caption', 'icon', 'link', 'css', 'id', 'span'];
     /*
     public string $caption; // текст меню
     public string $icon;    // иконка меню
     public string $link;    // ссылка
     public string $css;     // дополнительны CSS-классы
     public string $id;      // ID элемента меню
+    public string $span;    // ID поля для индикатора чисел
     */
     protected array $_fields = [];
     protected ?BaseMenu $_subMenu = null;
 
     function createSubMenu(): BaseMenu {
         $this->_subMenu = new BaseMenu;
+        return $this->_subMenu;
+    }
+
+    function getSubMenu(): BaseMenu {
         return $this->_subMenu;
     }
 
@@ -28,7 +33,7 @@ class MenuItem implements \IteratorAggregate {
     }
 
     function isActive(string $active): bool {
-        return $this->id == $active ||
+        return ($this->id && $this->id === $active) ||
             ($this->_subMenu !== null && $this->_subMenu->isActiveByID($active));
     }
 

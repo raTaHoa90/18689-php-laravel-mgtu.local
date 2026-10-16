@@ -1,10 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\CategoriesController;
-use App\Http\Controllers\Admin\ProductsController;
-use App\Http\Controllers\Admin\ProductsTypesController;
-use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\{
+    AuthController,
+    CategoriesController,
+    ProductsController,
+    ProductsTypesController,
+    UsersController,
+    OrderController as AdminOrderController
+};
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
@@ -20,13 +23,14 @@ Route::controller(OrderController::class)->group(function(){
     Route::post('/order-add', 'addOrder');
 });
 
-Route::group(['prefix'=>'/admin'], function(){
-    Route::controller(AuthController::class)->group(function(){
-        Route::get('/',       'main');
-        Route::get('/auth',   'authPage');
-        Route::post('login',  'login');
-        Route::get('/logout', 'logout');
-    });
+Route::controller(AuthController::class)->prefix('/admin')->group(function(){
+    Route::get('/',       'main');
+    Route::get('/auth',   'authPage');
+    Route::post('login',  'login');
+    Route::get('/logout', 'logout');
+});
+
+Route::middleware(['AdminPanel'])->prefix('/admin')->group(function(){
 
     Route::controller(ProductsTypesController::class)->group(function(){
         Route::get('/products/types', 'table');
@@ -63,5 +67,12 @@ Route::group(['prefix'=>'/admin'], function(){
         Route::get('/users', 'table');
         Route::post('/users/create-user', 'createUser');
         Route::get('/users/{user:name}', 'user');
+    });
+
+    Route::controller(AdminOrderController::class)->group(function(){
+        Route::get('/orders', 'table');
+
+        Route::get('/orders/{orderRecord}/set-status','setStatus')->where('orderRecord', '[0-9]+');
+        Route::get('/orders/{orderRecord}', 'order')->where('orderRecord', '[0-9]+');
     });
 });
