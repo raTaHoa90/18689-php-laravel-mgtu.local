@@ -59,8 +59,22 @@
                     <td>{{ $userData->id }}</td>
                     <td>{{ $userData->name }}</td>
                     <td>{{ $userData->email }}</td>
-                    <td>{{ $userData->roleName() }}</td>
-                    <td></td>
+                    <td>@if($user->hasEditAdminUser($userData))
+                        {{ $userData->roleName() }}
+                    @else
+                        <select onchange="setRoleUser({{ $userData->id }}, this.value)" onclick="return cancel(event);" class="form-control">
+                        @foreach ($roles as $roleID => $caption)
+                            <option value="{{$roleID}}"
+                                @if($userData->group_role == $roleID) selected @endif
+                            >{{$caption}}</option>
+                        @endforeach
+                        </select>
+                    @endif
+                    </td>
+                    <td>@if(!$user->hasEditAdminUser($userData))
+                        <a class="btn btn-danger" href="/admin/users/{{$userData->id}}/repass">Сбросить пароль</a>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
             </tbody>

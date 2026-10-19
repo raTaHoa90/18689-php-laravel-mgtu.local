@@ -11,15 +11,15 @@ class UserPolicy
         return !in_array($user->group_role, [User::ROLE_CLIENT, User::ROLE_GUEST, User::ROLE_BANNED]);
     }
 
-    public function updateOrderStatusToWork(User $user){
-
+    public function menuUsers(User $user): bool {
+        return in_array($user->group_role, [User::ROLE_ADMINISTRATOR, User::ROLE_MANAGER]);
     }
 
-    public function updateOrderStatusToTravel(User $user){
-
+    public function menuProducts(User $user): bool {
+        return in_array($user->group_role, [User::ROLE_ADMINISTRATOR, User::ROLE_CONTENT_M]);
     }
 
-    public function updateOrderStatusToApply(User $user){
-
+    public function menuOrders(User $user){
+        return in_array($user->group_role, [User::ROLE_ADMINISTRATOR, User::ROLE_CARRIER, User::ROLE_LOGIST]);
     }
 }

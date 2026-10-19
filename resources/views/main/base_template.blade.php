@@ -2,14 +2,8 @@
 
 @push('head')
     <link rel="stylesheet" href="/css/main.css">
-    <script>
-        function addProduct(idProduct){
-            $.post('/add-product', {idProduct},function(req){
-                if(req.ok)
-                    $('#countProduct').text('('+req.count+')');
-            }, 'json');
-        }
-    </script>
+    <script src="/js/main.js"></script>
+    <script>$(_=> setProduct({{ $countCartProducts }}));</script>
 @endpush
 
 @section('menu')

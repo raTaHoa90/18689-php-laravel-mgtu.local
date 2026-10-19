@@ -55,7 +55,25 @@ class User extends Authenticatable
         ];
     }
 
+    function hasEditAdminUser(User $thisUser){
+        return $thisUser->NotUseAdminPanel() || $thisUser->id == $this->id ||
+                ($thisUser->isAdmin() && !$this->isAdmin()) ||
+                ($thisUser->isManager() && !$this->isAdmin());
+    }
+
     function roleName(): string {
         return static::ROLES[$this->group_role] ?? '???';
+    }
+
+    function NotUseAdminPanel(): bool {
+        return in_array($this->group_role, [static::ROLE_GUEST, static::ROLE_CLIENT]);
+    }
+
+    function isAdmin(): bool {
+        return $this->group_role == static::ROLE_ADMINISTRATOR;
+    }
+
+    function isManager(): bool {
+        return $this->group_role == static::ROLE_MANAGER;
     }
 }
