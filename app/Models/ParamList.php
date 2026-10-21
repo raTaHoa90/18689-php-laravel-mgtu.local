@@ -70,7 +70,7 @@ class ParamList extends Model {
         return $this->type_values == static::TYPE_IMAGE_LIST;
     }
 
-    function getValueByID($id): string{
+    function getValueByID($id, bool $isUserSelect): string{
         $param = ParamListValue::where([
             'list_id' => $this->id,
             'id' => $id
@@ -81,13 +81,15 @@ class ParamList extends Model {
 
         switch($this->type_values){
             case static::TYPE_TEXT_LIST:
-                return $param->value;
+                return $isUserSelect
+                    ? '<span class="item-list">'.$param->value.'</span>'
+                    : $param->value;
 
             case static::TYPE_COLOR_LIST:
-                return '<div style="width:32px;height:32px;background:'.$param->value.';display:inline-block;"></div>';
+                return '<div '.($isUserSelect ? 'class="item-list"' : '').' style="width:32px;height:32px;background:'.$param->value.';display:inline-block;vertical-align:middle"></div>';
 
             case static::TYPE_IMAGE_LIST:
-                return '<img src="'.$param->value.'" style="width:32px;height:32px;display:inline-block;">';
+                return '<img '.($isUserSelect ? 'class="item-list"' : '').' src="'.$param->value.'" style="width:32px;height:32px;display:inline-block;vertical-align:middle">';
 
             default:
                 return '';

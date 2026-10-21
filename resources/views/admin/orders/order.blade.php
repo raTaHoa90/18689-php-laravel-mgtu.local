@@ -59,12 +59,21 @@
                 <th>Название</th>
                 <th>кол-во</th>
                 <th>стоимость</th>
+                <th>Параметры</th>
             </tr>
             @foreach($order->products() as $prod)
-            <tr> @php($product = $prod->product())
+            <tr>@php($product = $prod->product())
+                @php($params = $prod->params)
                 <td><a href="/products/{{$product->saf}}" target="_blank">{{$product->caption}}</a></td>
                 <td>{{$prod->count_product}} шт.</td>
                 <td>{{$product->price * $prod->count_product}} руб.</td>
+                <td>
+                    @foreach($product->params() as $param)
+                    @if($params && isset($params[$param->id]))
+                    <b>{{$param->caption}}</b>: {!! $param->list()->getValueByID($params[$param->id], false)!!}<br>
+                    @endif
+                    @endforeach
+                </td>
             </tr>
             @endforeach
         </table>

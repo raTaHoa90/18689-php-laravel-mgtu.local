@@ -39,7 +39,35 @@
     </dialog>
 
     <section>
-        {{ $users->links() }}
+        {{-- request()->query() - получение текущих GET-переменных
+        <a href="{{ route('users.table', request()->query() + ['test'=> 123]) }}"></a>
+        <a href="{{ action('UserController@table', request()->query() + ['test'=> 123]) }}"></a>
+        <a href="{{ url()->query('/admin/users', request()->query() + ['test'=> 123]) }}"></a>
+        => https://18689-php-laravel-mgtu.local/admin/users?page=2&test=123
+        --}}
+        <form action="?" method="GET">
+            <input name="page" type="hidden" value="{{request('page', 1)}}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group flex-nowrap">
+                            <input name="search" value="{{request('search', '')}}" type="text" class="form-control" placeholder="Search..." aria-label="Username" aria-describedby="addon-wrapping">
+                            <button type="submit" class="input-group-text" id="addon-wrapping"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <select name="roleID" onchange="this.parentNode.parentNode.parentNode.parentNode.submit()" class="form-control">
+                            <option value="norole">- Не выбрано -</option>
+                            @php($lastRoleSel = request('roleID', 'norole'))
+                            @foreach ($roles as $roleID => $caption)
+                                <option value="{{$roleID}}" @selected($roleID == $lastRoleSel) >{{$caption}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <table class="table">
             <thead>
                 <tr>

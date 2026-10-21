@@ -40,7 +40,7 @@ class ProductParam extends Model {
         return ParamList::find($this->list_id);
     }
 
-    function getValue(){
+    function getValue($nameList): string {
         if(!in_array($this->type_param, static::TYPES_OF_LIST))
             return $this->value;
 
@@ -48,13 +48,35 @@ class ProductParam extends Model {
         if($this->type_param == static::TYPE_LIST_VALUES_USER_SELECT){
             $result = ["<div class='-values'>"];
             $ids = explode(',',$this->value);
-            foreach($ids as $id)
-                $result[] = $list->getValueByID($id);
+            foreach($ids as $i => $id)
+                $result[] = '<label><input type=radio name="'
+                    .$nameList
+                    .'" value='.$id
+                    .($i == 0 ? ' checked' : '')
+                    .' style="display:none">'
+                    .$list->getValueByID($id, true)
+                    .'</label>'
+                ;
             $result[] = '</div>';
             return implode(' ', $result);
         }
 
-        return $list->getValueByID($this->value);
+        return $list->getValueByID($this->value, false);
+    }
+
+    function getValueSet(int $valueID): string {
+        if(!in_array($this->type_param, static::TYPES_OF_LIST))
+            return $this->value;
+
+        $list = $this->list();
+        if($this->type_param == static::TYPE_LIST_VALUES_USER_SELECT){
+            $ids = explode(',',$this->value);
+            if(!in_array($valueID, $ids))
+                $valueID = array_shift($ids);
+            return "<div class='-values'>". $list->getValueByID($valueID, false) . '</div>';
+        }
+
+        return $list->getValueByID($this->value, false);
     }
 
 

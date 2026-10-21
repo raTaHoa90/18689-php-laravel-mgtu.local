@@ -26,9 +26,27 @@ class UsersController extends BaseController {
     //========================
 
     function table(){
+        $roleID = strtolower(trim(request('roleID', 'norole')));
+        $search = mb_strtolower(trim(request('search', '')));
+
+        if($search || $roleID != 'norole')
+            $users = User::orderBy('id')
+                ->when($roleID != 'norole', fn($q)=>$q
+                    ->where('group_role', $roleID)
+                )->when($search, function($q)use($search){
+                    $arSearch = explode(' ', $search);
+                    foreach($arSearch as $find)
+                        $q = $q->orWhere('name', 'ILIKE', '%'.$find.'%')
+                            ->orWhere('email', 'ILIKE', '%'.$find.'%');
+                    return $q;
+                })->orderBy('id')
+                ->paginate(10);
+        else
+            $users = User::orderBy('id')->paginate(10);
+
         return view('admin.users.table', [
             'roles' => $this->getRolesAndSetMenu(),
-            'users' => User::orderBy('id')->paginate(10)
+            'users' => $users
         ]);
     }
 

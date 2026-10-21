@@ -26,7 +26,12 @@ Route::controller(OrderController::class)->group(function(){
     Route::get('/carts', 'cartPage');
 
     Route::post('/add-product', 'addProductToCart');
+
     Route::post('/order-add', 'addOrder');
+
+    Route::post('/inc-product', 'incProductToCart');
+    Route::post('/dec-product', 'decProductToCart');
+    Route::post('/set-product', 'setProductToCart');
 });
 
 Route::controller(AuthController::class)->prefix('/admin')->group(function(){
@@ -76,7 +81,7 @@ Route::middleware(['AdminPanel'])->prefix('/admin')->group(function(){
     })->can('menu-products', User::class);
 
     Route::controller(UsersController::class)->group(function(){
-        Route::get('/users', 'table');
+        Route::get('/users', 'table')->name('users.table');
         Route::post('/users/create-user', 'createUser');
         Route::get('/users/{user:name}', 'user');
         Route::post('/users/set-role', 'setRole');

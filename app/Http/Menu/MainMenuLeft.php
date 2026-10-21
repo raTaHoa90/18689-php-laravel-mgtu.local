@@ -14,7 +14,7 @@ class MainMenuLeft extends BaseMenu {
 
     function __construct($categories)
     {
-        $catalogMenu = $this->AddMenu('каталог')->icon('fa-archive')->id('catalog')->createSubMenu();
+        $catalogMenu = $this->AddMenu('каталог')->link('/')->icon('fa-archive')->id('catalog')->createSubMenu();
         $this->add_submenu(0, $categories, $catalogMenu);
     }
 }

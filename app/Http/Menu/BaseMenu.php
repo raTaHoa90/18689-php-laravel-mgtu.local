@@ -2,7 +2,7 @@
 
 namespace App\Http\Menu;
 
-class BaseMenu implements \IteratorAggregate {
+class BaseMenu implements \IteratorAggregate, \Countable {
     protected array $menuItems = [];
     public string $active = '';
 
@@ -25,5 +25,9 @@ class BaseMenu implements \IteratorAggregate {
             if($item->isActive($active))
                 return true;
         return false;
+    }
+
+    function count(): int {
+        return count($this->menuItems);
     }
 }

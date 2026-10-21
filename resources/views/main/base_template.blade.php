@@ -27,7 +27,7 @@
 @endsection
 
 @section('base-content')
-    @if($breadcrumbs)
+    @if(count($breadcrumbs))
     @foreach($breadcrumbs as $itemMenu)
         <a class="btn {{$itemMenu->isCss() ? $itemMenu->css : 'btn-light'}}"
             @if($itemMenu->isLink()) href="{{ $itemMenu->link }}" @endif

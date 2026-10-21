@@ -8,6 +8,13 @@
         .images img{
             max-height: 200px;
         }
+        .item-list {
+            border: 1px solid black;
+        }
+        input:checked+.item-list {
+            border: 1px solid white;
+            outline: 2px solid black;
+        }
     </style>
 
     <script>
@@ -30,6 +37,7 @@
             @endforeach
         </div>
 
+
         <h3>Информация о товаре:</h3>
         <div class="container">
             <div class="row">
@@ -37,6 +45,7 @@
                     {!!strtr($product->description, ["\n"=>'<br>'])!!}
                 </div>
                 <div class="col">
+                    <form id="settingsProductForm" style="margin-bottom: 10px">
                     <table class='r-t'>
                         <caption style="caption-side: top;">Характеристики</caption>
                         <tr>
@@ -46,13 +55,16 @@
                     @foreach ($product->params() as $paramName => $param)
                         <tr>
                             <td>{{$paramName}}:</td>
-                            <td>{!!$param->getValue()!!}</td>
+                            <td>{!!$param->getValue('params['.$param->id.']')!!}</td>
                         </tr>
                     @endforeach
                     </table>
+                </form>
+                <input class="btn btn-success" type="button" value="Добавить в корзину" onclick="addProductForm({{$product->id}}, 'settingsProductForm'); return cancel(event);">
                 </div>
             </div>
         </div>
+
 
         {{--<tr>
             <td>Статус:</td>
