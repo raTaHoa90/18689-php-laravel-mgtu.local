@@ -28,6 +28,6 @@ class AdminMenu extends BaseMenu {
         if($user->can('menu-orders', User::class))
             $this->AddMenu('Заказы')->icon('fa-shopping-cart')->link('/admin/orders')->id('orders');
 
-        $this->AddMenu('Выход')->icon('fa-sign-out')->link('/admin/logout');
+        $this->AddMenu('Выход')->icon('fa-sign-out')->link('/logout');
     }
 }

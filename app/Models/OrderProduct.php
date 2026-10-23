@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ProductTraits;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -13,12 +14,11 @@ use Illuminate\Database\Eloquent\Model;
     'param_values'   // внесенные параметры товара для заказа
 ])]
 class OrderProduct extends Model {
+    use ProductTraits;
+
     public $timestamps = false;
     protected $table = 'order_product';
 
-    function product(): Product{
-        return Product::find($this->product_id);
-    }
 
     // Аксессор - несуществующие поля
     // $this->params

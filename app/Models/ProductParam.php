@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\Traits\ProductTraits;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
     'list_id'     // ссылка на лист значений, если выбран соответствующий тип
 ])]
 class ProductParam extends Model {
+    use ProductTraits;
+
     const
         TYPE_TEXT = 0, // текст
         TYPE_LIST_VALUES = 1, // лист значений
@@ -25,11 +28,6 @@ class ProductParam extends Model {
         TYPES_OF_LIST = [self::TYPE_LIST_VALUES_USER_SELECT, self::TYPE_LIST_VALUES];
 
     protected $table = 'product_params';
-
-    // возвражает товар, к которому относится параметр
-    function product(): Product {
-        return Product::find($this->product_id);
-    }
 
     // возвращает список значений, если выбран тип листа
     function list(): ?ParamList {

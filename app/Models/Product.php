@@ -3,8 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 #[Fillable([
@@ -30,6 +33,18 @@ class Product extends Model {
         ];
 
     private $_params = null;
+
+    #[Scope]
+    protected function visibleStatus(Builder $query){
+        $subQuery = DB::table('product_rating', 'pr')
+            ->selectRaw('avg(rating) as avg_rating, product_id')
+            ->groupBy('product_id');
+
+        $query->where('status', Product::STATUS_VISIBLE)
+            ->selectRaw('products.*, pr.avg_rating')
+            ->leftJoinSub($subQuery, 'pr', fn($join)=>$join->on('pr.product_id','=', 'products.id'))
+            ->orderBy('id');
+    }
 
     function getStatus(): string{
         return static::STATUS[$this->status] ?? '';

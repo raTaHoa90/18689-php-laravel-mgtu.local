@@ -6,6 +6,7 @@ use App\Http\Menu\BaseMenu;
 use App\Http\Menu\MainMenuLeft;
 use App\Http\Menu\MainMenuRight;
 use App\Models\Category;
+use Illuminate\Support\Facades\Session;
 
 class BaseController extends Controller {
     public ?BaseMenu $rightMenu;
@@ -20,5 +21,7 @@ class BaseController extends Controller {
 
         $this->breadcrumbs = new BaseMenu;
         view()->share('breadcrumbs', $this->breadcrumbs);
+
+        view()->share('countCartProducts', count(Session::get('products',[])));
     }
 }

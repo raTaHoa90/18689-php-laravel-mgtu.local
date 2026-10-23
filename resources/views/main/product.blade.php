@@ -15,12 +15,17 @@
             border: 1px solid white;
             outline: 2px solid black;
         }
+
     </style>
 
     <script>
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true
+        var stars;
+        $(_=>{
+            lightbox.option({
+                'resizeDuration': 200,
+                'wrapAround': true
+            });
+            stars = new StarRating('.star-rating', {clearable: false, tooltip: false})
         });
     </script>
 @endpush
@@ -28,7 +33,18 @@
 @section('content')
 
     <section style="float:left">
-        <h2>{{$product->caption}}</h2>
+        @php($value = $rating ? $rating->rating : 0)
+        <h2>{{$product->caption}}
+            <div class='star'></div> {{$avgRating}}
+
+        <select @guest disabled @endguest class="star-rating" onchange="if(!this.disabled) sendRating({{$product->id}},this.value);">
+            <option value="">Select a rating</option>
+            <option value="5" @selected($value == 5)>Excellent</option>
+            <option value="4" @selected($value == 4)>Very Good</option>
+            <option value="3" @selected($value == 3)>Average</option>
+            <option value="2" @selected($value == 2)>Poor</option>
+            <option value="1" @selected($value == 1)>Terrible</option>
+        </select></h2>
 
         <h3>Изображение товара:</h3>
         <div class="images">

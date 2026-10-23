@@ -1,7 +1,7 @@
 @extends('admin.base_template')
 
 @section('content')
-    <form action="/admin/login" method='POST'>
+    <form action="/login" method='POST'>
         @csrf
 
         @if($errors->any())

@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\{
-    AuthController,
     CategoriesController,
     ProductsController,
     ProductsTypesController,
@@ -9,6 +8,9 @@ use App\Http\Controllers\Admin\{
     OrderController as AdminOrderController,
     ProfileController
 };
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\LKController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\OrderController;
 use App\Models\User;
@@ -16,10 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () { return view('welcome'); });
 
+Route::controller(LKController::class)->group(function(){
+    Route::get('/lk', 'page');
+});
+
 Route::controller(MainController::class)->group(function(){
     Route::get('/', 'main');
     Route::get('/products/{product:saf}', 'product');
     Route::get('/categories/{category:saf}', 'category');
+
+    Route::post('/rating-product', 'ratingProduct');
 });
 
 Route::controller(OrderController::class)->group(function(){
@@ -34,16 +42,21 @@ Route::controller(OrderController::class)->group(function(){
     Route::post('/set-product', 'setProductToCart');
 });
 
-Route::controller(AuthController::class)->prefix('/admin')->group(function(){
-    Route::get('/',       'main');
+Route::controller(AuthController::class)->group(function(){
     Route::get('/auth',   'authPage');
-    Route::post('login',  'login');
+    Route::post('/login',  'login');
     Route::get('/logout', 'logout');
+});
+
+Route::controller(RegistrationController::class)->group(function(){
+    Route::get('/registration',   'page');
+    Route::post('/registration',  'newUser');
 });
 
 Route::middleware(['AdminPanel'])->prefix('/admin')->group(function(){
 
     Route::controller(ProfileController::class)->group(function(){
+        Route::get('/', 'main');
         Route::get('/profile', 'page');
         Route::post('/profile/save', 'saveData');
         Route::post('/profile/update-password', 'savePassword');

@@ -37,3 +37,8 @@ function addProductForm(idProduct, formId){
     form.append('idProduct', idProduct);
     ajaxPostForm('/add-product', form);
 }
+
+
+function sendRating(idProduct, stars){
+    $.post('/rating-product', {idProduct, stars});
+}

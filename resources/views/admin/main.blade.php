@@ -2,5 +2,5 @@
 
 @section('content')
     Вы авторизовались как {{ $user->name }} ({{ $user->email }})!
-    <a href="/admin/logout">Выйти</a>
+    <a href="/logout">Выйти</a>
 @endsection

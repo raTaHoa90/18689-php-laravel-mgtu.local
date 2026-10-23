@@ -21,13 +21,13 @@ class AdminPanelMiddleware
         $user = Auth::user();
         if($user === null){
             Log::debug("Неавторизованный пользователь попытался зайти в панель администратора");
-            return redirect('/admin/auth');
+            return redirect('/auth');
         }
 
         if(in_array($user->group_role, [User::ROLE_GUEST, User::ROLE_BANNED])){
             Log::debug('Заблокированный пользователь или гость попытался пройти на недоступную ему страницу');
             Auth::logout();
-            return redirect('/admin/auth');
+            return redirect('/auth');
         }
 
         if($user->group_role == User::ROLE_CLIENT)

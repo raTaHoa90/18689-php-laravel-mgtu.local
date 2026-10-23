@@ -8,7 +8,7 @@
     align-content: space-around;
     margin:0 auto;
 
-    & div{
+    &> div{
         width: 300px;
         padding: 10px;
         border: 1px black solid;
@@ -22,4 +22,11 @@
             max-height: 270px;
         }
     }
+}
+
+.star {
+    background-image: var(--gl-star-full) !important;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
 }

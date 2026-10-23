@@ -12,6 +12,14 @@ class ProfileController extends BaseController {
         return view('admin.users.profile');
     }
 
+    function main(){
+        $user = Auth::user();
+        if($user === null)
+            return redirect('/auth');
+
+        return view('admin.main');
+    }
+
     /** POST */
 
     function saveData(){

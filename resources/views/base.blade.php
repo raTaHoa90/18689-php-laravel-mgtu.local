@@ -7,8 +7,18 @@
     <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/bootstrap-5.3.8-examples/assets/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/base-styles.css">
+    {{-- https://pryley.github.io/star-rating.js/ --}}
+    <link rel="stylesheet" href="/css/star-rating.min.css">
+    <script src="/js/star-rating.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <title>Document</title>
+
+    <style>
+        :root {
+            --gl-star-empty: url(../imgs/star-empty.svg);  /* if using background images */
+            --gl-star-full: url(../imgs/star-full.svg);    /* if using background images */
+        }
+    </style>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>

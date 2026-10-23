@@ -1,26 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends BaseController {
 
-    function main(){
-        $user = Auth::user();
-        if($user === null)
-            return redirect('/admin/auth');
-
-        return view('admin.main');
-    }
-
     function authPage(){
-        return view('admin.auth');
+        $this->menu->active = 'auth';
+        return view('auth.auth');
     }
 
     function logout(){
         Auth::logout();
-        return redirect('/admin');
+        return redirect('/');
     }
 
     // POST
@@ -33,6 +27,11 @@ class AuthController extends BaseController {
 
         if(Auth::attempt(['email' => request('login'), 'password' => request('pass')])) {
             request()->session()->regenerate();
+
+            $user = Auth::user();
+            /** @var User $user */
+            if($user->group_role == User::ROLE_CLIENT)
+                return redirect('/lk');
             return redirect('/admin');
         }
 
